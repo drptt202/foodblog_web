@@ -1,0 +1,1 @@
+export {default as ListRecipeForm} from './Component'

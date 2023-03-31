@@ -1,0 +1,15 @@
+.layout-main{
+    height: 100%;
+}
+
+.app-content-wrapper{
+    position: relative;
+    .app-content{
+        margin: 0 auto;
+        width: 1024px;
+        max-width: 1024px;
+        min-width: 1024px;
+        padding: 72px 12px 12px;
+        background-color: white;
+    }
+}

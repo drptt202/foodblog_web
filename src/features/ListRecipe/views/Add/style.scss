@@ -1,0 +1,101 @@
+.feature-detail{
+    margin: -12px;
+    margin-top: -24px;
+    padding-bottom: 48px;
+    .recipe-detail-wrap{
+        .content-detail{
+            margin: 12px;
+            .detail-component{
+                margin-bottom: 12px;
+                .label{
+                    font-weight: bold;
+                }
+            }
+            .title{
+                font-size: $fontSizeTitle;
+            }
+            .recipe-auth{
+                .auth-avatar{
+                    display: inline-block;
+                }
+                .auth-name{
+                    display: inline-block;
+                    margin-left: 6px;
+                    font-weight: bold;
+                }
+                .auth-last-update{
+                    display: inline-block;
+                    margin-left: 3px;
+                    color: $colorGray;
+                }
+            }
+            .information{
+                .infor-value{
+                    font-weight: bold;
+                }
+            }
+            .ingredient{
+                .ingredient-list{
+                    margin-left: 24px;
+                    .ingredient-item{
+                        padding: 6px 12px 6px 0;
+                    }
+                }
+            }
+            .steps{
+                .step-list{
+                    margin-left: 24px;
+                    .step-item{
+                        margin-bottom: 12px;
+                        .step-num{
+                            font-weight: bold;
+                        }
+                        .step-img{
+                            margin-top: 6px;
+                            text-align: center;
+                            img{
+                                max-height: 200px;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+                }
+            }
+            .comments{
+                .label{
+                    margin-bottom: 6px;
+                }
+                .comment-action{
+                    margin-top: 6px;
+                    text-align: right;
+                }
+                .user-comments{
+                    .comment-item{
+                        display: flex;
+                        margin-bottom: 12px;
+                        .left{
+                            margin-right: 6px;
+                        }
+                        .right{
+                            display: inline-block;
+                            .comment-last-update{
+                                margin-left: 3px;
+                                color: $colorGray;
+                            }
+
+                            .btn-action{
+                                padding: 0;
+                                margin-right: 12px;
+                            }
+
+                            .btn-delete{
+                                color: #d32b2b;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @import "components/style";
+}

@@ -1,0 +1,21 @@
+// index is the entry for all styles.
+//@import 'antd.css';
+@import 'variables';
+@import 'mixins';
+@import 'global';
+
+.ant-divider-horizontal {
+    margin: 6px 0;
+}
+
+// Layout
+@import "../layouts/style";
+
+// Auth
+@import "../features/Auth/style";
+
+// App
+@import "../features/Exceptions/style";
+@import "../features/Home/style";
+@import "../features/Recipe/style";
+@import "../features/User/style";
