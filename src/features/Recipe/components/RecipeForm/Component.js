@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import {message, Divider, Form, Select, Upload} from "antd";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { message, Divider, Form, Select, Upload } from "antd";
 import {
     AntButton,
     AntFormItem,
@@ -8,16 +8,16 @@ import {
     AntInputNumber,
     AntInputTextArea,
 } from "@layouts";
-import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import helpers from "@ultis/helpers";
 
 const RECIPE_STATUS = [
     {
-        id  : 'RT',
+        id: 'RT',
         name: 'RT',
     },
     {
-        id  : 'CK',
+        id: 'CK',
         name: 'CK',
     }
 ]
@@ -30,7 +30,7 @@ class CustomComponent extends Component {
         this.state = {
             recipeIngredients: [
                 {
-                    id    : null,
+                    id: null,
                     amount: "",
                 }
             ],
@@ -38,25 +38,25 @@ class CustomComponent extends Component {
             recipeSteps: [
                 {
                     description: null,
-                    image      : null,
+                    image: null,
                 }
             ],
 
             selectedFileList: [],
-            previewVisible  : false,
-            previewImage    : '',
-            previewTitle    : '',
+            previewVisible: false,
+            previewImage: '',
+            previewTitle: '',
 
             selectedIngredients: []
         }
     }
 
     onSubmit = (data) => {
-        let {recipeIngredients, recipeSteps} = this.state;
+        let { recipeIngredients, recipeSteps } = this.state;
 
         let selectedIngredients = [];
-        recipeIngredients       = recipeIngredients.map((value, idx) => {
-            let ingredientId     = data[`ingredientId[${idx}]`];
+        recipeIngredients = recipeIngredients.map((value, idx) => {
+            let ingredientId = data[`ingredientId[${idx}]`];
             let ingredientAmount = data[`ingredientAmount[${idx}]`];
             if (selectedIngredients.indexOf(ingredientId) !== -1) {
                 return null;
@@ -64,10 +64,10 @@ class CustomComponent extends Component {
             selectedIngredients.push(ingredientId)
             return {
                 ingredientId: ingredientId,
-                amount      : ingredientAmount,
+                amount: ingredientAmount,
             }
         })
-        recipeIngredients       = recipeIngredients.filter((value) => {
+        recipeIngredients = recipeIngredients.filter((value) => {
             return value !== null
         })
 
@@ -78,16 +78,16 @@ class CustomComponent extends Component {
         })
 
         this.props.onSubmit({
-            amount     : data.amount ?? null,
-            cookTime   : data.cookTime ?? null,
+            amount: data.amount ?? null,
+            cookTime: data.cookTime ?? null,
             description: data.description ?? null,
-            id         : data.id ?? null,
-            image      : data.image ?? null,
-            name       : data.name ?? null,
+            id: data.id ?? null,
+            image: data.image ?? null,
+            name: data.name ?? null,
             prepareTime: data.prepareTime ?? null,
-            status     : data.status ?? null,
-            ingredient : recipeIngredients,
-            step       : recipeSteps,
+            status: data.status ?? null,
+            ingredient: recipeIngredients,
+            step: recipeSteps,
         })
     }
 
@@ -98,9 +98,9 @@ class CustomComponent extends Component {
     }
 
     onClickNewRecipeIngredient = () => {
-        let {recipeIngredients} = this.state;
+        let { recipeIngredients } = this.state;
         recipeIngredients.push({
-            id    : null,
+            id: null,
             amount: "",
         })
 
@@ -111,8 +111,8 @@ class CustomComponent extends Component {
     }
 
     onClickRemoveIngredient = (e) => {
-        const idx               = e.currentTarget.value;
-        let {recipeIngredients} = this.state
+        const idx = e.currentTarget.value;
+        let { recipeIngredients } = this.state
 
         // Remove by index
         if (idx && recipeIngredients.length > 0) {
@@ -125,10 +125,10 @@ class CustomComponent extends Component {
     }
 
     onClickNewRecipeStep = () => {
-        let {recipeSteps} = this.state;
+        let { recipeSteps } = this.state;
         recipeSteps.push({
             description: null,
-            image      : null,
+            image: null,
         })
 
         this.setState({
@@ -138,8 +138,8 @@ class CustomComponent extends Component {
     }
 
     onClickRemoveStep = (e) => {
-        const idx         = e.currentTarget.value;
-        let {recipeSteps} = this.state
+        const idx = e.currentTarget.value;
+        let { recipeSteps } = this.state
 
         // Remove by index
         if (idx && recipeSteps.length > 0) {
@@ -152,34 +152,34 @@ class CustomComponent extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        let prevDetail          = prevProps.recipe.detail;
-        let currentDetail       = this.props.recipe.detail;
-        let prevDetailRecipe    = prevDetail.data ?? {}
+        let prevDetail = prevProps.recipe.detail;
+        let currentDetail = this.props.recipe.detail;
+        let prevDetailRecipe = prevDetail.data ?? {}
         let currentDetailRecipe = currentDetail.data ?? {}
 
         if (prevDetailRecipe.recipeId !== currentDetailRecipe.recipeId) {
             let ingredient = currentDetailRecipe.DetailIngredients ?? []
-            let step       = currentDetailRecipe.Steps ?? [];
+            let step = currentDetailRecipe.Steps ?? [];
 
             let formData = {
-                id         : currentDetailRecipe.recipeId ?? null,
-                name       : currentDetailRecipe.recipeName ?? "",
-                amount     : currentDetailRecipe.amount ?? 0,
-                cookTime   : currentDetailRecipe.cookingTime ?? 0,
+                id: currentDetailRecipe.recipeId ?? null,
+                name: currentDetailRecipe.recipeName ?? "",
+                amount: currentDetailRecipe.amount ?? 0,
+                cookTime: currentDetailRecipe.cookingTime ?? 0,
                 prepareTime: currentDetailRecipe.preparationTime ?? 0,
                 description: currentDetailRecipe.description ?? "",
-                image      : currentDetailRecipe.image ?? null,
-                status     : currentDetailRecipe.status ?? null,
+                image: currentDetailRecipe.image ?? null,
+                status: currentDetailRecipe.status ?? null,
             }
 
             let recipeIngredients = []
-            let recipeSteps       = [];
+            let recipeSteps = [];
 
             ingredient.map((item, idx) => {
-                formData[`ingredientId[${idx}]`]     = item.ingredientId;
+                formData[`ingredientId[${idx}]`] = item.ingredientId;
                 formData[`ingredientAmount[${idx}]`] = item.amount;
                 recipeIngredients.push({
-                    id    : item.ingredientId,
+                    id: item.ingredientId,
                     amount: item.amount,
                 })
             })
@@ -188,7 +188,7 @@ class CustomComponent extends Component {
                 formData[`stepDescription[${idx}]`] = item.description;
                 recipeSteps.push({
                     description: item.description,
-                    image      : item.image,
+                    image: item.image,
                 })
             })
 
@@ -199,7 +199,7 @@ class CustomComponent extends Component {
             this.setState({
                 ...this.state,
                 recipeIngredients: recipeIngredients,
-                recipeSteps      : recipeSteps,
+                recipeSteps: recipeSteps,
             })
         }
 
@@ -241,20 +241,20 @@ class CustomComponent extends Component {
 
     render() {
         let {
-                formData,
-                recipe,
-            } = this.props
+            formData,
+            recipe,
+        } = this.props
 
         const {
-                  ingredientList,
-              } = this.props.home
+            ingredientList,
+        } = this.props.home
 
-        let {recipeIngredients, recipeSteps, selectedIngredients}            = this.state
-        const {selectedFileList, previewVisible, previewImage, previewTitle} = this.state
+        let { recipeIngredients, recipeSteps, selectedIngredients } = this.state
+        const { selectedFileList, previewVisible, previewImage, previewTitle } = this.state
 
-        let {add, detail, update} = recipe;
-        let dataDetail            = detail.data ?? {};
-        const isDetail            = !!dataDetail.id
+        let { add, detail, update } = recipe;
+        let dataDetail = detail.data ?? {};
+        const isDetail = !!dataDetail.id
 
         // Response data
         const updateLoading = false;
@@ -266,19 +266,19 @@ class CustomComponent extends Component {
             <Form
                 className="form-center form-custom recipe-form"
                 onFinish={(data => this.onSubmit(data))}
-                labelCol={{span: 4}}
-                wrapperCol={{span: 20}}
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 20 }}
                 ref={this.formRef}
                 initialValues={initValues}
-                style={{padding: 24}}
+                style={{ padding: 24 }}
             >
                 <AntFormItem
                     hidden={true}
                     name="id"
                 >
-                    <AntInput/>
+                    <AntInput />
                 </AntFormItem>
-                {/*<AntFormItem
+                <AntFormItem
                     label="Ảnh bìa"
                     name="image"
                 >
@@ -290,42 +290,42 @@ class CustomComponent extends Component {
                         customRequest={this.customRequest}
                         onPreview={this.handlePreview}
                     >
-                        {selectedFileList.length >= 1 ? null : <UploadButton/>}
+                        {selectedFileList.length >= 1 ? null : <UploadButton />}
                     </Upload>
-                </AntFormItem>*/}
+                </AntFormItem>
                 <AntFormItem
                     required={true}
                     label="Tên công thức"
                     name="name"
                 >
-                    <AntInput disabled={isDetail} placeholder="Nhập tên công thức"/>
+                    <AntInput disabled={isDetail} placeholder="Nhập tên công thức" />
                 </AntFormItem>
                 <AntFormItem
                     label="Mô tả"
                     name="description"
                 >
-                    <AntInputTextArea rows={5} placeholder="Nhập mô tả"/>
+                    <AntInputTextArea rows={5} placeholder="Nhập mô tả" />
                 </AntFormItem>
                 <AntFormItem
                     required={true}
                     label="Khẩu phần"
                     name="amount"
                 >
-                    <AntInput disabled={isDetail} placeholder="Nhập khẩu phần" addonAfter="người"/>
+                    <AntInput disabled={isDetail} placeholder="Nhập khẩu phần" addonAfter="người" />
                 </AntFormItem>
                 <AntFormItem
                     required={true}
                     label="Thời gian chuẩn bị"
                     name="prepareTime"
                 >
-                    <AntInput disabled={isDetail} placeholder="Nhập thời gian chuẩn bị" addonAfter="phút"/>
+                    <AntInput disabled={isDetail} placeholder="Nhập thời gian chuẩn bị" addonAfter="phút" />
                 </AntFormItem>
                 <AntFormItem
                     required={true}
                     label="Thời gian nấu"
                     name="cookTime"
                 >
-                    <AntInput disabled={isDetail} placeholder="Nhập thời gian nấu" addonAfter="phút"/>
+                    <AntInput disabled={isDetail} placeholder="Nhập thời gian nấu" addonAfter="phút" />
                 </AntFormItem>
                 <AntFormItem
                     required={true}
@@ -366,7 +366,7 @@ class CustomComponent extends Component {
                     <AntButton
                         block
                         type="dashed"
-                        icon={<PlusOutlined/>}
+                        icon={<PlusOutlined />}
                         onClick={this.onClickNewRecipeIngredient}
                     />
                 </div>
@@ -388,12 +388,12 @@ class CustomComponent extends Component {
                     <AntButton
                         block
                         type="dashed"
-                        icon={<PlusOutlined/>}
+                        icon={<PlusOutlined />}
                         onClick={this.onClickNewRecipeStep}
                     />
                 </div>
 
-                <Divider style={{marginBlock: 24}}/>
+                <Divider style={{ marginBlock: 24 }} />
                 <div className="text-center group-button">
                     {
                         dataDetail.id ?
@@ -422,7 +422,7 @@ class CustomComponent extends Component {
         )
     }
 
-    handleChange = ({fileList: newFileList}) => {
+    handleChange = ({ fileList: newFileList }) => {
         this.setState({
             ...this.state,
             selectedFileList: newFileList
@@ -435,10 +435,10 @@ class CustomComponent extends Component {
      * @param onError
      * @param file
      */
-    customRequest = ({onSuccess, onError, file}) => {
-        let {selectedFileList} = this.state
+    customRequest = ({ onSuccess, onError, file }) => {
+        let { selectedFileList } = this.state
         try {
-            let currentFile    = selectedFileList.find((item) => {
+            let currentFile = selectedFileList.find((item) => {
                 return item.uid = file.uid
             });
             currentFile.status = "done";
@@ -487,8 +487,8 @@ class CustomComponent extends Component {
         this.setState({
             ...this.state,
             previewVisible: true,
-            previewImage  : file.url || file.preview,
-            previewTitle  : file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+            previewImage: file.url || file.preview,
+            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
         })
     };
 }
@@ -496,56 +496,56 @@ class CustomComponent extends Component {
 function mapStateToProps(state) {
     return {
         recipe: state.recipe,
-        home  : state.home,
+        home: state.home,
     }
 }
 
 export default connect(mapStateToProps, {})(CustomComponent)
 
 const initValues = {
-    id         : null,
-    name       : "",
-    amount     : 0,
-    cookTime   : 0,
+    id: null,
+    name: "",
+    amount: 0,
+    cookTime: 0,
     prepareTime: 0,
     description: "",
-    image      : null,
-    status     : null,
-    ingredient : [
+    image: null,
+    status: null,
+    ingredient: [
         {
-            ingredientId    : null,
+            ingredientId: null,
             ingredientAmount: 1,
         }
     ],
 }
 
 const RecipeStep = ({
-                        idx,
-                        recipeStep,
-                        onRemove,
-                    }) => {
+    idx,
+    recipeStep,
+    onRemove,
+}) => {
 
     recipeStep = recipeStep ?? {}
     return (
         <AntFormItem
             label={`Bước ${idx + 1}`}
             required={true}
-            style={{marginBottom: 0}}
+            style={{ marginBottom: 0 }}
         >
             <AntFormItem
                 className="condition-item"
                 style={{
-                    display    : "inline-block",
-                    width      : "calc((100% - 42px))",
+                    display: "inline-block",
+                    width: "calc((100% - 42px))",
                     marginRight: 10
                 }}
                 name={`stepDescription[${idx}]`}
             >
-                <AntInput placeholder="Nhập mô tả" style={{width: "100%"}}/>
+                <AntInput placeholder="Nhập mô tả" style={{ width: "100%" }} />
             </AntFormItem>
             <AntButton
                 danger
-                icon={<DeleteOutlined/>}
+                icon={<DeleteOutlined />}
                 onClick={onRemove}
                 value={idx}
             />
@@ -554,28 +554,28 @@ const RecipeStep = ({
 }
 
 const RecipeIngredient = ({
-                              idx,
-                              ingredientList,
-                              recipeIngredient,
-                              onRemove,
-                              selectedIngredients,
-                              onSelectedIngredients,
-                          }) => {
+    idx,
+    ingredientList,
+    recipeIngredient,
+    onRemove,
+    selectedIngredients,
+    onSelectedIngredients,
+}) => {
 
     selectedIngredients = selectedIngredients ?? []
-    recipeIngredient    = recipeIngredient ?? {}
+    recipeIngredient = recipeIngredient ?? {}
     return (
         <AntFormItem
             label={`Nguyên liệu ${idx + 1}`}
             required={true}
-            style={{marginBottom: 0}}
+            style={{ marginBottom: 0 }}
         >
             <AntFormItem
                 className="condition-item"
                 style={{
-                    display    : 'inline-block',
+                    display: 'inline-block',
                     marginRight: 8,
-                    width      : "calc((100% - 50px) / 2)"
+                    width: "calc((100% - 50px) / 2)"
                 }}
                 name={`ingredientId[${idx}]`}
             >
@@ -599,17 +599,17 @@ const RecipeIngredient = ({
             <AntFormItem
                 className="condition-item"
                 style={{
-                    display    : "inline-block",
-                    width      : "calc((100% - 50px) / 2)",
+                    display: "inline-block",
+                    width: "calc((100% - 50px) / 2)",
                     marginRight: 10
                 }}
                 name={`ingredientAmount[${idx}]`}
             >
-                <AntInput placeholder="Số lượng" style={{width: "100%"}}/>
+                <AntInput placeholder="Số lượng" style={{ width: "100%" }} />
             </AntFormItem>
             <AntButton
                 danger
-                icon={<DeleteOutlined/>}
+                icon={<DeleteOutlined />}
                 onClick={onRemove}
                 value={idx}
             />
@@ -621,13 +621,13 @@ const PreviewImage = (props) => (
     <img
         src={props.src}
         alt={props.alt}
-        style={{width: '100%'}}
+        style={{ width: '100%' }}
     />
 )
 
 const UploadButton = () => (
     <div>
-        <PlusOutlined/>
+        <PlusOutlined />
         <div
             style={{
                 marginTop: 8,

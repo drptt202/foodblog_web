@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Divider, Form, Popconfirm } from "antd";
+import { Divider, Form, message, Popconfirm, Upload } from "antd";
 import { Link } from "react-router-dom";
 import {
     AntButton,
     AntFormItem,
     AntInput,
 } from "@layouts";
+import { PlusOutlined } from "@ant-design/icons";
+import helpers from "@ultis/helpers";
 
 class CustomComponent extends Component {
     formRef = React.createRef();
@@ -16,6 +18,7 @@ class CustomComponent extends Component {
         this.state = {
             open: false,
             confirmLoading: false,
+            selectedFileList: []
         }
     }
 
@@ -109,7 +112,7 @@ class CustomComponent extends Component {
         let {
             id,
         } = this.props
-        
+
         const { selectedFileList, previewVisible, previewImage, previewTitle } = this.state
 
         // Response data
@@ -131,6 +134,21 @@ class CustomComponent extends Component {
                     name="id"
                 >
                     <AntInput />
+                </AntFormItem>
+                <AntFormItem
+                    label="Ảnh bìa"
+                    name="image"
+                >
+                    <Upload
+                        fileList={selectedFileList}
+                        listType="picture-card"
+                        beforeUpload={this.beforeUpload}
+                        onChange={this.handleChange}
+                        customRequest={this.customRequest}
+                        onPreview={this.handlePreview}
+                    >
+                        {selectedFileList.length >= 1 ? null : <UploadButton />}
+                    </Upload>
                 </AntFormItem>
                 <AntFormItem
                     required={true}
@@ -191,10 +209,73 @@ class CustomComponent extends Component {
         )
     }
 
+    handleChange = ({ fileList: newFileList }) => {
+        this.setState({
+            ...this.state,
+            selectedFileList: newFileList
+        })
+    };
+
+    /**
+     * Custom handel upload
+     * @param onSuccess
+     * @param onError
+     * @param file
+     */
+    customRequest = ({ onSuccess, onError, file }) => {
+        let { selectedFileList } = this.state
+        try {
+            let currentFile = selectedFileList.find((item) => {
+                return item.uid = file.uid
+            });
+            currentFile.status = "done";
+            this.setState({
+                ...this.state,
+                selectedFileList: selectedFileList
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    /**
+     * Validate image
+     * @param file
+     * @returns {boolean}
+     */
+    beforeUpload = (file) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+
+        return isJpgOrPng && isLt2M;
+    };
+
     handleCancel = () => {
         this.setState({
             ...this.state,
             previewVisible: false
+        })
+    };
+
+    handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await helpers.getBase64(file.originFileObj)
+        }
+
+        this.setState({
+            ...this.state,
+            previewVisible: true,
+            previewImage: file.url || file.preview,
+            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
         })
     };
 }
@@ -212,3 +293,16 @@ const initValues = {
     id: null,
     name: "",
 }
+
+const UploadButton = () => (
+    <div>
+        <PlusOutlined />
+        <div
+            style={{
+                marginTop: 8,
+            }}
+        >
+            Upload
+        </div>
+    </div>
+);
