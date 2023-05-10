@@ -379,6 +379,11 @@ class CustomComponent extends Component {
                                     idx={idx}
                                     recipeStep={step}
                                     onRemove={this.onClickRemoveStep}
+                                    state={this.state}
+                                    beforeUpload={this.beforeUpload}
+                                    onChange={this.handleChange}
+                                    customRequest={this.customRequest}
+                                    onPreview={this.handlePreview}
                                 />
                             </div>
                         )
@@ -523,7 +528,13 @@ const RecipeStep = ({
     idx,
     recipeStep,
     onRemove,
+    state,
+    beforeUpload,
+    handleChange,
+    customRequest,
+    handlePreview
 }) => {
+    const { selectedFileList, previewVisible, previewImage, previewTitle } = state
 
     recipeStep = recipeStep ?? {}
     return (
@@ -549,6 +560,21 @@ const RecipeStep = ({
                 onClick={onRemove}
                 value={idx}
             />
+            <AntFormItem
+                label="Ảnh"
+                name="image"
+            >
+                <Upload
+                    fileList={selectedFileList}
+                    listType="picture-card"
+                    beforeUpload={beforeUpload}
+                    onChange={handleChange}
+                    customRequest={customRequest}
+                    onPreview={handlePreview}
+                >
+                    {selectedFileList.length >= 1 ? null : <UploadButton />}
+                </Upload>
+            </AntFormItem>
         </AntFormItem>
     )
 }
