@@ -1,2 +1,2 @@
-export {Add} from './views/Add'
-export {Edit} from './views/Edit'
+export { Add } from './components/Add'
+export { Edit } from './components/Edit'

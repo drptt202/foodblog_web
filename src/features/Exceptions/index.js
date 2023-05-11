@@ -1,1 +1,1 @@
-export * from './views/ErrorPage'
+export * from './components/ErrorPage'

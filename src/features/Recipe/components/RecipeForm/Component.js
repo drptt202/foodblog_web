@@ -373,17 +373,14 @@ class CustomComponent extends Component {
 
                 {
                     recipeSteps.map((step, idx) => {
+                        console.log(step)
                         return (
                             <div key={idx}>
                                 <RecipeStep
                                     idx={idx}
                                     recipeStep={step}
                                     onRemove={this.onClickRemoveStep}
-                                    state={this.state}
                                     beforeUpload={this.beforeUpload}
-                                    onChange={this.handleChange}
-                                    customRequest={this.customRequest}
-                                    onPreview={this.handlePreview}
                                 />
                             </div>
                         )
@@ -528,13 +525,8 @@ const RecipeStep = ({
     idx,
     recipeStep,
     onRemove,
-    state,
-    beforeUpload,
-    handleChange,
-    customRequest,
-    handlePreview
+    beforeUpload
 }) => {
-    const { selectedFileList, previewVisible, previewImage, previewTitle } = state
 
     recipeStep = recipeStep ?? {}
     return (
@@ -565,14 +557,10 @@ const RecipeStep = ({
                 name="image"
             >
                 <Upload
-                    fileList={selectedFileList}
                     listType="picture-card"
                     beforeUpload={beforeUpload}
-                    onChange={handleChange}
-                    customRequest={customRequest}
-                    onPreview={handlePreview}
                 >
-                    {selectedFileList.length >= 1 ? null : <UploadButton />}
+                    <UploadButton />
                 </Upload>
             </AntFormItem>
         </AntFormItem>

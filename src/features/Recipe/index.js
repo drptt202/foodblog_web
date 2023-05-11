@@ -1,4 +1,4 @@
-export {Detail} from './views/Detail'
-export {Add} from './views/Add'
-export {Edit} from './views/Edit'
-export {Management} from './views/Management'
+export { Detail } from './components/Detail'
+export { Add } from './components/Add'
+export { Edit } from './components/Edit'
+export { Management } from './components/Management'
